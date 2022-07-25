@@ -23,7 +23,7 @@ node('terraform'){
 
         withAzureKeyvault(
             azureKeyVaultSecrets: secrets, 
-            keyVaultURLOverride: 'https://kv-devopsigb-prod-france.vault.azure.net/',
+            keyVaultURLOverride: 'https://kv-devopsigb-prod-france.vault.azure.net',
             credentialIDOverride: 'azure_service_principal'
         ) {
             sh 'echo $BACKENDSTORAGEACCOUNTNAME'
