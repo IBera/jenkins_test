@@ -1,12 +1,8 @@
-pipeline {
-    agent {
-        docker { image 'ibera/alpine_iac:v1.0' }
-    }
-    stages {
-        stage('Test') {
-            steps {
-                sh 'terraform -version'
-            }
-        }
-    }
+
+
+node('terraform'){
+
+	stage('terraform'){
+		sh "terraform -version"
+
 }
