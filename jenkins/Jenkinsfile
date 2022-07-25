@@ -15,9 +15,9 @@ node('terraform'){
     stage('Terraform Init'){        
 
         def secrets = [
-            secret('BACKEND_STORAGE_ACCOUNT_NAME', 'BACKEND_STORAGE_ACCOUNT_NAME')
-            secret('BACKEND_STORAGE_ACCOUNT_CONTAINER_NAME', 'BACKEND_STORAGE_ACCOUNT_CONTAINER_NAME')
-            secret('RG_NAME', 'RG_NAME')
+            secret('BACKEND_STORAGE_ACCOUNT_NAME', 'BACKEND_STORAGE_ACCOUNT_NAME'),
+            secret('BACKEND_STORAGE_ACCOUNT_CONTAINER_NAME', 'BACKEND_STORAGE_ACCOUNT_CONTAINER_NAME'),
+            secret('RG_NAME', 'RG_NAME'),
             secret('ARM_ACCESS_KEY', 'BACKEND-ACCESS-KEY')
         ]
 
