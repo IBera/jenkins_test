@@ -15,10 +15,10 @@ node('terraform'){
     stage('Terraform Init'){        
 
         def secrets = [
-            [ secretType: 'Secret', name: 'BACKEND_STORAGE_ACCOUNT_NAME', envVariable: 'BACKEND_STORAGE_ACCOUNT_NAME' ],
-            [ secretType: 'Secret', name: 'BACKEND_STORAGE_ACCOUNT_CONTAINER_NAME', envVariable: 'BACKEND_STORAGE_ACCOUNT_CONTAINER_NAME' ],
-            [ secretType: 'Secret', name: 'RG_NAME', envVariable: 'RG_NAME' ],
-            [ secretType: 'Secret', name: 'ARM_ACCESS_KEY', envVariable: 'BACKEND-ACCESS-KEY' ]
+            secret('BACKEND_STORAGE_ACCOUNT_NAME', 'BACKEND_STORAGE_ACCOUNT_NAME')
+            secret('BACKEND_STORAGE_ACCOUNT_CONTAINER_NAME', 'BACKEND_STORAGE_ACCOUNT_CONTAINER_NAME')
+            secret('RG_NAME', 'RG_NAME')
+            secret('ARM_ACCESS_KEY', 'BACKEND-ACCESS-KEY')
         ]
 
         withAzureKeyvault(
