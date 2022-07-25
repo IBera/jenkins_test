@@ -15,7 +15,7 @@ node('terraform'){
     stage('Terraform Init'){        
 
         def secrets = [
-            [ secretType: 'Secret', name: 'BACKEND_STORAGE_ACCOUNT_NAME', envVariable: 'BACKENDSTORAGE_ACCOUNTNAME' ],
+            [ secretType: 'Secret', name: 'BACKEND_STORAGE_ACCOUNT_NAME', envVariable: 'BACKENDSTORAGEACCOUNTNAME' ],
             [ secretType: 'Secret', name: 'BACKEND_STORAGE_ACCOUNT_CONTAINER_NAME', envVariable: 'BACKENDSTORAGEACCOUNTCONTAINERNAME' ],
             [ secretType: 'Secret', name: 'RG_NAME', envVariable: 'RGNAME' ],
             [ secretType: 'Secret', name: 'ARM_ACCESS_KEY', envVariable: 'BACKENDACCESSKEY' ]
@@ -23,7 +23,7 @@ node('terraform'){
 
         withAzureKeyvault(
             azureKeyVaultSecrets: secrets, 
-            keyVaultURLOverride: 'https://kv-devopsigb-prod-france.vault.azure.net',
+            keyVaultURLOverride: 'https://kv-devopsigb-prod-france.vault.azure.net/',
             credentialIDOverride: 'azure_service_principal'
         ) {
             sh 'echo $BACKENDSTORAGEACCOUNTNAME'
