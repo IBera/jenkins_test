@@ -21,7 +21,12 @@ node('terraform'){
             [ secretType: 'Secret', name: 'ARM_ACCESS_KEY', envVariable: 'BACKEND-ACCESS-KEY' ]
         ]
 
-        withAzureKeyvault(secrets) {
+        withAzureKeyvault(
+            azureKeyVaultSecrets: secrets, 
+            keyVaultURLOverride: 'https://kv-devopsigb-prod-france.vault.azure.net/',
+            credentialIDOverride: 'azure_service_principal'
+        ) 
+        {
             sh 'echo $BACKEND_STORAGE_ACCOUNT_NAME'
             sh 'echo $BACKEND_STORAGE_ACCOUNT_CONTAINER_NAME'
             sh 'echo $RG_NAME'
