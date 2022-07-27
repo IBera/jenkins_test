@@ -14,11 +14,15 @@ node('terraform'){
 
     stage('Terraform Init'){        
 
+        //def secrets = [
+        //    [ secretType: 'Secret', name: 'BACKEND_STORAGE_ACCOUNT_NAME', envVariable: 'BACKENDSTORAGEACCOUNTNAME' ],
+        //    [ secretType: 'Secret', name: 'BACKEND_STORAGE_ACCOUNT_CONTAINER_NAME', envVariable: 'BACKENDSTORAGEACCOUNTCONTAINERNAME' ],
+        //    [ secretType: 'Secret', name: 'RG_NAME', envVariable: 'RGNAME' ],
+        //    [ secretType: 'Secret', name: 'ARM_ACCESS_KEY', envVariable: 'BACKENDACCESSKEY' ]
+        //]
+
         def secrets = [
-            [ secretType: 'Secret', name: 'BACKEND_STORAGE_ACCOUNT_NAME', envVariable: 'BACKENDSTORAGEACCOUNTNAME' ],
-            [ secretType: 'Secret', name: 'BACKEND_STORAGE_ACCOUNT_CONTAINER_NAME', envVariable: 'BACKENDSTORAGEACCOUNTCONTAINERNAME' ],
-            [ secretType: 'Secret', name: 'RG_NAME', envVariable: 'RGNAME' ],
-            [ secretType: 'Secret', name: 'ARM_ACCESS_KEY', envVariable: 'BACKENDACCESSKEY' ]
+            secret('my-secret', 'MY_SECRET')
         ]
 
         withAzureKeyvault(
@@ -26,10 +30,11 @@ node('terraform'){
             keyVaultURLOverride: 'https://kv-devopsigb-prod-france.vault.azure.net/',
             credentialIDOverride: 'azure_service_principal'
         ) {
-            sh 'echo $BACKENDSTORAGEACCOUNTNAME'
-            sh 'echo $BACKENDSTORAGEACCOUNT_CONTAINERNAME'
-            sh 'echo $RGNAME'
-            sh 'echo $BACKENDACCESSKEY'
+            //sh 'echo $BACKENDSTORAGEACCOUNTNAME'
+            //sh 'echo $BACKENDSTORAGEACCOUNT_CONTAINERNAME'
+            //sh 'echo $RGNAME'
+            //sh 'echo $BACKENDACCESSKEY'
+            sh 'echo $MY-SECRET'
         }
 
     }
