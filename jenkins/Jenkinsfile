@@ -22,9 +22,9 @@ node('terraform'){
         //    [ secretType: 'Secret', name: 'ARM_ACCESS_KEY', envVariable: 'BACKENDACCESSKEY' ]
         //]
 
-        def secrets = [
-            secret('my-secret', 'MY_SECRET')
-        ]
+        // def secrets = [
+        //     secret('my-secret', 'MY_SECRET')
+        // ]
 
         withCredentials([azureServicePrincipal('azure_service_principal')]) {
             sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
