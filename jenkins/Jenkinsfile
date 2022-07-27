@@ -42,6 +42,20 @@ node('terraform'){
                         sh 'az login --service-principal -u $AZURE_KEYVAULT_SP_CLIENT_ID -p $AZURE_KEYVAULT_SP_CLIENT_SECRET -t $AZURE_KEYVAULT_SP_TENANT_ID'
                         sh 'az group list'
                         sh 'printenv'
+
+                        def secrets = [
+                            [ secretType: 'Secret', name: 'BACKEND_STORAGE_ACCOUNT_NAME', envVariable: 'BACKENDSTORAGEACCOUNTNAME' ],
+                            [ secretType: 'Secret', name: 'BACKEND_STORAGE_ACCOUNT_CONTAINER_NAME', envVariable: 'BACKENDSTORAGEACCOUNTCONTAINERNAME' ],
+                            [ secretType: 'Secret', name: 'RG_NAME', envVariable: 'RGNAME' ],
+                            [ secretType: 'Secret', name: 'ARM_ACCESS_KEY', envVariable: 'BACKENDACCESSKEY' ]
+                        ]
+                    
+                        withAzureKeyvault(secrets) {
+                            sh 'echo $BACKENDSTORAGEACCOUNTNAME'
+                            sh 'echo $BACKENDSTORAGEACCOUNTCONTAINERNAME'
+                        }
+
+
         }
 
 
