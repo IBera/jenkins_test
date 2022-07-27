@@ -6,6 +6,7 @@ node('terraform'){
 		string(name: 'AZURE_KEYVAULT_URL', description: 'Name of the image to build')
 	}*/
 
+
     stage('test'){
         sh "terraform -version"
         sh "pwd"
@@ -25,17 +26,26 @@ node('terraform'){
             secret('my-secret', 'MY_SECRET')
         ]
 
-        withAzureKeyvault(
-            azureKeyVaultSecrets: secrets, 
-            keyVaultURLOverride: 'https://kv-devopsigb-prod-france.vault.azure.net/',
-            credentialIDOverride: 'azure_service_principal'
-        ) {
-            //sh 'echo $BACKENDSTORAGEACCOUNTNAME'
-            //sh 'echo $BACKENDSTORAGEACCOUNT_CONTAINERNAME'
-            //sh 'echo $RGNAME'
-            //sh 'echo $BACKENDACCESSKEY'
-            sh 'echo $MY-SECRET'
+        withCredentials([azureServicePrincipal('azure_service_principal')]) {
+            sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
+            sh 'az group list'
         }
 
+
+        //withEnv(['AZURE_KEYVAULT_URL=https://kv-devopsigb-prod-france.vault.azure.net/',
+        //'DB_ENGINE=sqlite']) {
+        //        withAzureKeyvault(
+        //            azureKeyVaultSecrets: secrets, 
+        //            keyVaultURLOverride: 'https://kv-devopsigb-prod-france.vault.azure.net/',
+        //            credentialIDOverride: 'azure_service_principal'
+        //        ) {
+        //            //sh 'echo $BACKENDSTORAGEACCOUNTNAME'
+        //            //sh 'echo $BACKENDSTORAGEACCOUNT_CONTAINERNAME'
+        //            //sh 'echo $RGNAME'
+        //            //sh 'echo $BACKENDACCESSKEY'
+        //            sh 'echo $MY-SECRET'
+        //        }
+//
+        //}
     }
 }
