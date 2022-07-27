@@ -30,6 +30,9 @@ node('terraform'){
         //    sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
         //    sh 'az group list'
         //}
+        script {
+            env.AZURE_KEYVAULT_URL = "https://kv-devopsigb-prod-france.vault.azure.net/"
+        }
 
         withCredentials([azureServicePrincipal(credentialsId: 'azure_service_principal',
                                     subscriptionIdVariable: 'AZURE_KEYVAULT_SP_SUBSCRIPTION_ID',
@@ -38,6 +41,7 @@ node('terraform'){
                                     tenantIdVariable: 'AZURE_KEYVAULT_SP_TENANT_ID')]) {
                         sh 'az login --service-principal -u $AZURE_KEYVAULT_SP_CLIENT_ID -p $AZURE_KEYVAULT_SP_CLIENT_SECRET -t $AZURE_KEYVAULT_SP_TENANT_ID'
                         sh 'az group list'
+                        sh 'printenv'
         }
 
 
