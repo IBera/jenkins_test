@@ -1,78 +1,12 @@
-
-
-node('terraform'){
-
-    /*parameters {
-		string(name: 'AZURE_KEYVAULT_URL', description: 'Name of the image to build')
-	}*/
-
-
-    stage('test'){
-        sh "terraform -version"
-        sh "pwd"
-        sh "ls -ll"
+pipeline {
+    agent {
+        docker { image 'node:16.13.1-alpine' }
     }
-
-    stage('Terraform Init'){        
-
-        //def secrets = [
-        //    [ secretType: 'Secret', name: 'BACKEND_STORAGE_ACCOUNT_NAME', envVariable: 'BACKENDSTORAGEACCOUNTNAME' ],
-        //    [ secretType: 'Secret', name: 'BACKEND_STORAGE_ACCOUNT_CONTAINER_NAME', envVariable: 'BACKENDSTORAGEACCOUNTCONTAINERNAME' ],
-        //    [ secretType: 'Secret', name: 'RG_NAME', envVariable: 'RGNAME' ],
-        //    [ secretType: 'Secret', name: 'ARM_ACCESS_KEY', envVariable: 'BACKENDACCESSKEY' ]
-        //]
-
-        // def secrets = [
-        //     secret('my-secret', 'MY_SECRET')
-        // ]
-
-        //withCredentials([azureServicePrincipal('azure_service_principal')]) {
-        //    sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
-        //    sh 'az group list'
-        //}
-        script {
-            env.AZURE_KEYVAULT_URL = "https://kv-devopsigb-prod-france.vault.azure.net/"
+    stages {
+        stage('Test') {
+            steps {
+                sh 'node --version'
+            }
         }
-
-        withCredentials([azureServicePrincipal(credentialsId: 'azure_service_principal',
-                                    subscriptionIdVariable: 'AZURE_KEYVAULT_SP_SUBSCRIPTION_ID',
-                                    clientIdVariable: 'AZURE_KEYVAULT_SP_CLIENT_ID',
-                                    clientSecretVariable: 'AZURE_KEYVAULT_SP_CLIENT_SECRET',
-                                    tenantIdVariable: 'AZURE_KEYVAULT_SP_TENANT_ID')]) {
-                        sh 'az login --service-principal -u $AZURE_KEYVAULT_SP_CLIENT_ID -p $AZURE_KEYVAULT_SP_CLIENT_SECRET -t $AZURE_KEYVAULT_SP_TENANT_ID'
-                        sh 'az group list'
-                        sh 'printenv'
-
-                        def secrets = [
-                            [ secretType: 'Secret', name: 'BACKEND_STORAGE_ACCOUNT_NAME', envVariable: 'BACKENDSTORAGEACCOUNTNAME' ],
-                            [ secretType: 'Secret', name: 'BACKEND_STORAGE_ACCOUNT_CONTAINER_NAME', envVariable: 'BACKENDSTORAGEACCOUNTCONTAINERNAME' ],
-                            [ secretType: 'Secret', name: 'RG_NAME', envVariable: 'RGNAME' ],
-                            [ secretType: 'Secret', name: 'ARM_ACCESS_KEY', envVariable: 'BACKENDACCESSKEY' ]
-                        ]
-                    
-                        withAzureKeyvault(secrets) {
-                            sh 'echo $BACKENDSTORAGEACCOUNTNAME'
-                            sh 'echo $BACKENDSTORAGEACCOUNTCONTAINERNAME'
-                        }
-
-
-        }
-
-
-        //withEnv(['AZURE_KEYVAULT_URL=https://kv-devopsigb-prod-france.vault.azure.net/',
-        //'DB_ENGINE=sqlite']) {
-        //        withAzureKeyvault(
-        //            azureKeyVaultSecrets: secrets, 
-        //            keyVaultURLOverride: 'https://kv-devopsigb-prod-france.vault.azure.net/',
-        //            credentialIDOverride: 'azure_service_principal'
-        //        ) {
-        //            //sh 'echo $BACKENDSTORAGEACCOUNTNAME'
-        //            //sh 'echo $BACKENDSTORAGEACCOUNT_CONTAINERNAME'
-        //            //sh 'echo $RGNAME'
-        //            //sh 'echo $BACKENDACCESSKEY'
-        //            sh 'echo $MY-SECRET'
-        //        }
-//
-        //}
     }
 }
