@@ -6,8 +6,10 @@ pipeline {
                 echo 'Starting to build docker image'
 
                 script {
-                    def customImage = docker.build("my-image:${env.BUILD_ID}")
-                    customImage.push()
+                    def customImage = docker.build("ibera/alpine_iac:v${env.BUILD_ID}")
+		                docker.withRegistry('https://index.docker.io/v1/', '034b0db1-bc8e-4aff-8347-7073cdbd3571'){
+                            customImage.push()
+		                }
                 }
             }
         }
